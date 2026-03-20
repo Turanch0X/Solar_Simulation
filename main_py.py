@@ -4,7 +4,7 @@ from PyQt5.QtCore import QTimer
 import math, os
 
 app = QApplication([])
-path_to_img = "images\\Sun.ico"
+path_to_img = "images\\Planets\\Sun.ico"
 main_pixmap = QPixmap(path_to_img)
 
 class Eye(QMainWindow):
@@ -12,10 +12,10 @@ class Eye(QMainWindow):
         super().__init__()
 
         self.setWindowTitle("Solar System Animation")
-        self.showFullScreen()
+        # self.showFullScreen()
 
-        self.filenames = os.listdir("images\\")
-        self.paths = [os.path.join("images\\", filename) for filename in self.filenames]
+        self.filenames = os.listdir("images\\Planets\\")
+        self.paths = [os.path.join("images\\Planets\\", filename) for filename in self.filenames]
         self.path_list = sorted(self.paths, key=os.path.getctime)
         self.path_list.pop()
 

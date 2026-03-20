@@ -9,61 +9,73 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+import os
 
 app = QtWidgets.QApplication([])
 
 dict = {
-    0: (2, 5, 1, 2),
+    0: (2, 4, 1, 2),
     1: (2, 0, 1, 2),
     2: (0, 2, 1, 3),
     3: (3, 1, 1, 2),
-    4: (4, 3, 1, 2),
-    5: (4, 2, 1, 3),
-    6: (1, 1, 1, 2),
-    7: (0, 3, 1, 2),
+    4: (4, 2, 1, 3),
+    5: (1, 1, 1, 2),
+    6: (1, 3, 1, 2),
+    7: (3, 3, 1, 2),
 
-    8: (2, 2, 1, 3),  # central image
-
-    9: (3, 4, 1, 2),
-    10: (1, 4, 1, 2),
-    11: (2, 5, 1, 2),
-    12: (4, 5, 1, 2)
+    8: (2, 2, 1, 2),  # central image
 }
 
 labl_list = []
-path_to_img = "logo_ico.ico"
-pixmap = QtGui.QPixmap(path_to_img)
+path_to_img = "images\\ark\\ARK.ico"
+
+filenames = os.listdir("images\\ark\\")
+paths = [os.path.join("images\\ark\\", filename) for filename in filenames]
+
+main_pixmap = QtGui.QPixmap(path_to_img)
 
 class Ui_MainWindow(QtWidgets.QMainWindow):
     def __init__(self):
         super().__init__()
 
         self.setWindowTitle("MainWindow")
-        self.resize(800, 600)
+        self.resize(800, 700)
         
         self.centralwidget = QtWidgets.QWidget(self)
         self.gridLayoutWidget = QtWidgets.QWidget(self.centralwidget)
-        self.gridLayoutWidget.setGeometry(QtCore.QRect(120, 80, 601, 381))
+        self.gridLayoutWidget.setGeometry(QtCore.QRect(120, 20, 601, 601))
 
         self.gridLayout = QtWidgets.QGridLayout(self.gridLayoutWidget)
         self.gridLayout.setContentsMargins(0, 0, 0, 0)
+        self.gridLayout.setAlignment(QtCore.Qt.AlignCenter)
 
-        for i in range(13):
-            labl = QtWidgets.QLabel(self.gridLayoutWidget)
+        
+        for i in range(9):
+            holder_labl = QtWidgets.QLabel(self.gridLayoutWidget)
+            holder_labl.setScaledContents(True)
+            holder_labl.setFixedSize(150, 150)
+
+            layout = QtWidgets.QVBoxLayout()
+            layout.setContentsMargins(0, 0, 0, 0)
+            layout.setAlignment(QtCore.Qt.AlignCenter)
+
+            holder_labl.setLayout(layout)
+            pixmap = QtGui.QPixmap(paths[i])
+        
+            labl = QtWidgets.QLabel()
             labl.setScaledContents(True)
-            self.gridLayout.addWidget(labl, dict[i][0], dict[i][1], dict[i][2], dict[i][3])
+            labl.setPixmap(pixmap)
+                
+            labl.setFixedSize(50, 50)
             labl_list.append(labl)
 
+            layout.addWidget(labl)
+            self.gridLayout.addWidget(holder_labl, dict[i][0], dict[i][1], dict[i][2], dict[i][3])
+
         self.setCentralWidget(self.centralwidget)
-        self.retranslateUi(self)
-
-    def retranslateUi(self, MainWindow):
-        for i in range(12):
-            labl_list[i].setPixmap(pixmap)
-            labl_list[i].setFixedSize(50, 50)
-
-        labl_list[8].setPixmap(pixmap)
+        labl_list[8].setPixmap(main_pixmap)
         labl_list[8].setFixedSize(150, 150)
+        
 
 exx = Ui_MainWindow()
 exx.show()
